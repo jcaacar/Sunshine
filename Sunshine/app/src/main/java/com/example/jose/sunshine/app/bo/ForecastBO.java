@@ -1,10 +1,11 @@
 package com.example.jose.sunshine.app.bo;
 
 import android.util.Log;
-import org.json.JSONObject;
+
+import org.json.JSONException;
 import java.io.IOException;
 
-import com.example.jose.sunshine.app.model.Forecast;
+import com.example.jose.sunshine.app.parser.WeatherDataParser;
 import com.example.jose.sunshine.app.util.NetworkUtil;
 
 
@@ -25,11 +26,11 @@ public class ForecastBO {
         return instance;
     }
 
-    public Forecast getByCity(String name) {
-        Forecast result = null;
+    public String[] getWeekDays(String city) throws IOException, JSONException {
+        String[] result = null;
         try {
-            JSONObject json = NetworkUtil.getRequestJson(String.format(API_URL, name));
-            result = new Forecast(json.toString());
+            String requestResult = NetworkUtil.getRequestString(String.format(API_URL, city));
+            return WeatherDataParser.getWeatherDataFromJson(requestResult, 7);
         } catch (IOException e) {
             Log.e(LOGTAG, e.getMessage());
         }

@@ -1,4 +1,4 @@
-package com.example.jose.sunshine.app.bo;
+package com.example.jose.sunshine.app.parser;
 
 import org.json.JSONArray;
 import org.json.JSONException;
