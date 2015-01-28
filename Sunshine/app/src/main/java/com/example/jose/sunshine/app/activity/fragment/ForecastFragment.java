@@ -3,6 +3,7 @@ package com.example.jose.sunshine.app.activity.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +18,9 @@ import com.example.jose.sunshine.app.R;
 import com.example.jose.sunshine.app.bo.ForecastBO;
 import com.example.jose.sunshine.app.model.Forecast;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +28,8 @@ import java.util.List;
 public class ForecastFragment extends Fragment {
 
     private static final String LOGTAG = ForecastFragment.class.getSimpleName();
+
+    private static final String CITY = "52040,BRA"; //Recife
 
     public ForecastFragment() {
         // Required empty public constructor
@@ -37,36 +43,7 @@ public class ForecastFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        // Create some dummy data for the ListView.  Here's a sample weekly forecast
-        String[] data = {
-                "Mon 6/23 - Sunny - 31/17",
-                "Tue 6/24 - Foggy - 21/8",
-                "Wed 6/25 - Cloudy - 22/17",
-                "Thurs 6/26 - Rainy - 18/11",
-                "Fri 6/27 - Foggy - 21/10",
-                "Sat 6/28 - TRAPPED IN - 23/18",
-                "Sun 6/29 - Sunny - 20/7",
-                "Thurs 6/26 - Rainy - 18/11",
-                "Fri 6/27 - Foggy - 21/10",
-                "Sat 6/28 - TRAPPED IN WEATHER STATION - 23/18",
-                "Sun 6/29 - Sunny - 20/7"
-        };
-        List<String> weekForecast = new ArrayList<String>(Arrays.asList(data));
-
-        ArrayAdapter<String> forecastAdapter = new ArrayAdapter<String>(
-                        getActivity(), // The current context (this activity)
-                        R.layout.list_item_forecast, // The name of the layout ID.
-                        R.id.list_item_forecast_textview, // The ID of the textview to populate.
-                        weekForecast);
-
-        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
-        // Get a reference to the ListView, and attach this adapter to it.
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-        listView.setAdapter(forecastAdapter);
-
-        return rootView;
+        return inflater.inflate(R.layout.fragment_main, container, false);
     }
 
     @Override
@@ -78,7 +55,7 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                //new FetchWeatherTask().execute("50040,BRA"); // Recife
+                new FetchWeatherTask().execute(CITY);
                 return true;
             case R.id.action_settings:
                 return true;
@@ -87,18 +64,33 @@ public class ForecastFragment extends Fragment {
         }
     }
 
-    public class FetchWeatherTask extends AsyncTask<String, Forecast, Forecast> {
+    public class FetchWeatherTask extends AsyncTask<String, String[], String[]> {
         @Override
-        protected Forecast doInBackground(String... params) {
+        protected String[] doInBackground(String... params) {
             if(params.length == 0)
                 return null;
 
-            return ForecastBO.getInstance().getByCity(params[0]);
+            String[] result = null;
+            try {
+                result = ForecastBO.getInstance().getWeekDays(params[0]);
+            } catch (IOException e) {
+                Log.e(LOGTAG, e.getMessage());
+            } catch (JSONException e) {
+                Log.e(LOGTAG, e.getMessage());
+            }
+            return result;
         }
 
         @Override
-        protected void onPostExecute(Forecast obj) {
-            Toast.makeText(getActivity(), obj.toString(), Toast.LENGTH_LONG).show();
+        protected void onPostExecute(String[] ret) {
+            ArrayAdapter<String> forecastAdapter = new ArrayAdapter<String>(
+                    getActivity(), // The current context (this activity)
+                    R.layout.list_item_forecast, // The name of the layout ID.
+                    R.id.list_item_forecast_textview, // The ID of the textview to populate.
+                    ret);
+
+            ListView listView = (ListView) getView().findViewById(R.id.listview_forecast);
+            listView.setAdapter(forecastAdapter);
         }
     }
 }
