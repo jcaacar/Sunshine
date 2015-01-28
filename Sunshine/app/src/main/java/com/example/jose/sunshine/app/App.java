@@ -19,8 +19,4 @@ public final class App extends Application {
     public static Context getAppContext() {
         return context;
     }
-
-    public static void Test() {
-
-    }
 }
