@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -83,14 +84,21 @@ public class ForecastFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String[] ret) {
-            ArrayAdapter<String> forecastAdapter = new ArrayAdapter<String>(
+            final ArrayAdapter<String> forecastAdapter = new ArrayAdapter<String>(
                     getActivity(), // The current context (this activity)
                     R.layout.list_item_forecast, // The name of the layout ID.
                     R.id.list_item_forecast_textview, // The ID of the textview to populate.
                     ret);
 
-            ListView listView = (ListView) getView().findViewById(R.id.listview_forecast);
+            final ListView listView = (ListView) getView().findViewById(R.id.listview_forecast);
             listView.setAdapter(forecastAdapter);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Toast.makeText(getActivity(), forecastAdapter.getItem(position).toString(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }
