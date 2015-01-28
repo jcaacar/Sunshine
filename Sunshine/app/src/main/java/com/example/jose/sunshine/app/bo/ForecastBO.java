@@ -1,5 +1,6 @@
 package com.example.jose.sunshine.app.bo;
 
+import android.accounts.NetworkErrorException;
 import android.util.Log;
 
 import org.json.JSONException;
@@ -32,6 +33,8 @@ public class ForecastBO {
             String requestResult = NetworkUtil.getRequestString(String.format(API_URL, city));
             return WeatherDataParser.getWeatherDataFromJson(requestResult, 7);
         } catch (IOException e) {
+            Log.e(LOGTAG, e.getMessage());
+        } catch (NetworkErrorException e) {
             Log.e(LOGTAG, e.getMessage());
         }
         return result;

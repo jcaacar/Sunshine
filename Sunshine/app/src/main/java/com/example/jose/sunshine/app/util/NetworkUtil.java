@@ -1,5 +1,6 @@
 package com.example.jose.sunshine.app.util;
 
+import android.accounts.NetworkErrorException;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -28,7 +29,10 @@ public final class NetworkUtil {
         return ni != null && ni.isConnected();
     }
 
-    public static String getRequestString(String url) throws IOException {
+    public static String getRequestString(String url) throws IOException, NetworkErrorException {
+        if(!isConnected())
+            throw new NetworkErrorException("Don't has Internet.");
+
         String result = null;
         InputStream is = null;
         HttpURLConnection conn = null;
@@ -38,7 +42,6 @@ public final class NetworkUtil {
             conn = (HttpURLConnection) u.openConnection();
             conn.setRequestMethod("GET");
             conn.connect();
-            Object o = conn.getContent();
             Log.d(LOGTAG, "status code: "+conn.getResponseCode());
             is = conn.getInputStream();
             if(is != null)
@@ -59,6 +62,8 @@ public final class NetworkUtil {
             String response = NetworkUtil.getRequestString(url);
             result = new JSONObject(response);
         } catch (JSONException e) {
+            Log.e(LOGTAG, e.getMessage());
+        } catch (NetworkErrorException e) {
             Log.e(LOGTAG, e.getMessage());
         }
         return result;
