@@ -1,8 +1,11 @@
 package com.example.jose.sunshine.app.activity.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,25 +17,18 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.jose.sunshine.app.R;
 import com.example.jose.sunshine.app.activity.DetailActivity;
+import com.example.jose.sunshine.app.activity.SettingsActivity;
 import com.example.jose.sunshine.app.bo.ForecastBO;
-import com.example.jose.sunshine.app.model.Forecast;
 
 import org.json.JSONException;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class ForecastFragment extends Fragment {
 
     private static final String LOGTAG = ForecastFragment.class.getSimpleName();
-
-    private static final String CITY = "52040,BRA"; //Recife
 
     public ForecastFragment() {
         // Required empty public constructor
@@ -50,6 +46,12 @@ public class ForecastFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        updateWeather();
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         inflater.inflate(R.menu.menu_forecastfragment, menu);
     }
@@ -58,13 +60,41 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                new FetchWeatherTask().execute(CITY);
-                return true;
+                updateWeather();
+                break;
+            case R.id.action_map:
+                openPreferredLocationInMap();
+                break;
             case R.id.action_settings:
-                return true;
+                SettingsActivity.open(getActivity());
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
+    }
+
+    private void openPreferredLocationInMap() {
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = sharedPrefs.getString(getString(R.string.pref_location_key),
+                                                getString(R.string.pref_location_default));
+
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
+                .appendQueryParameter("q", location).build();
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(geoLocation);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        } else {
+            Log.d(LOGTAG, "Couldn't call " + location + " no have app Map.");
+        }
+    }
+
+    private void updateWeather() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = prefs.getString(getString(R.string.pref_location_key), null);
+        new FetchWeatherTask().execute(location);
     }
 
     public class FetchWeatherTask extends AsyncTask<String, String[], String[]> {
@@ -86,6 +116,9 @@ public class ForecastFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String[] ret) {
+
+
+
             final ArrayAdapter<String> forecastAdapter = new ArrayAdapter<String>(
                     getActivity(), // The current context (this activity)
                     R.layout.list_item_forecast, // The name of the layout ID.
@@ -98,9 +131,8 @@ public class ForecastFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    //Toast.makeText(getActivity(), forecastAdapter.getItem(position).toString(), Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(getActivity(), DetailActivity.class);
+                    Intent intent = new Intent(getActivity(), DetailActivity.class).
+                            putExtra(Intent.EXTRA_TEXT, forecastAdapter.getItem(position));
                     startActivity(intent);
                 }
             });

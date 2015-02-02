@@ -14,7 +14,7 @@ public final class StreamUtil {
     public static String readToString(InputStream is) throws IOException {
         BufferedReader reader = null;
         try {
-            String line = null;
+            String line;
             StringBuilder sb = new StringBuilder();
             reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
             while ((line = reader.readLine()) != null) {

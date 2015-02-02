@@ -28,10 +28,10 @@ public class ForecastBO {
     }
 
     public String[] getWeekDays(String city) throws IOException, JSONException {
-        String[] result = null;
+        String[] result = new String[0];
         try {
             String requestResult = NetworkUtil.getRequestString(String.format(API_URL, city));
-            return WeatherDataParser.getWeatherDataFromJson(requestResult, 7);
+            result = WeatherDataParser.getWeatherDataFromJson(requestResult, 7);
         } catch (IOException e) {
             Log.e(LOGTAG, e.getMessage());
         } catch (NetworkErrorException e) {

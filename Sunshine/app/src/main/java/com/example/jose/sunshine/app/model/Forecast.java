@@ -7,19 +7,13 @@ import java.util.Date;
  */
 public class Forecast {
 
-    private String json;
-
     private Date date;
 
-
-
-
     public Forecast(String j) {
-        json = j;
     }
 
     @Override
     public String toString() {
-        return json;
+        return "";
     }
 }
