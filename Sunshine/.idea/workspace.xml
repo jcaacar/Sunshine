@@ -22,7 +22,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.example.jose.sunshine.app" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fb5f173-611f-49db-8590-c6f4a8588b8c" name="Default" comment="">
+    <list default="true" id="2fb5f173-611f-49db-8590-c6f4a8588b8c" name="Default" comment="Lesson 5 - Create ForecastAdapter">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Sunshine.iws" />
@@ -1089,7 +1089,11 @@
       <created>1423084970727</created>
       <updated>1423084970727</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Lesson 5 - Create ForecastAdapter">
+      <created>1423084993279</created>
+      <updated>1423084993279</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
