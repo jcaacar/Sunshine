@@ -22,14 +22,7 @@
     <option name="TOOL_WINDOW_CONFIGURED_FILTER" value="app: com.example.jose.sunshine.app" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2fb5f173-611f-49db-8590-c6f4a8588b8c" name="Default" comment="Lesson 5 - Create ForecastAdapter">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/jose/sunshine/app/adapter/ForecastAdapter.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_forecast_today.xml" />
-      <change type="DELETED" beforePath="C:\Users\jose\AndroidStudioProjects\.gitignore" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/java/com/example/jose/sunshine/app/activity/fragment/ForecastFragment.java" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/jose/sunshine/app/activity/fragment/ForecastFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/src/main/res/layout/list_item_forecast.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/list_item_forecast.xml" />
+    <list default="true" id="2fb5f173-611f-49db-8590-c6f4a8588b8c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Sunshine.iws" />
@@ -1092,7 +1085,11 @@
       <created>1422902231542</created>
       <updated>1422902231542</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Lesson 5 - Create ForecastAdapter">
+      <created>1423084970727</created>
+      <updated>1423084970727</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
