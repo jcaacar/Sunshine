@@ -13,12 +13,12 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
 
-        <receiver android:name="com.example.jose.sunshine.app.util.Receiver">
+        <!--<receiver android:name="com.example.jose.sunshine.app.util.Receiver">
             <intent-filter>
-                <!--<action android:name="android.intent.action.ACTION_SCREEN_ON" />  Only works Dynamic -->
+                &lt;!&ndash;<action android:name="android.intent.action.ACTION_SCREEN_ON" />  Only works Dynamic &ndash;&gt;
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
             </intent-filter>
-        </receiver>
+        </receiver>-->
 
         <activity
             android:name=".activity.MainActivity"

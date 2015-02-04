@@ -23,9 +23,6 @@ import com.example.jose.sunshine.app.activity.DetailActivity;
 import com.example.jose.sunshine.app.activity.SettingsActivity;
 import com.example.jose.sunshine.app.bo.ForecastBO;
 
-import org.json.JSONException;
-import java.io.IOException;
-
 public class ForecastFragment extends Fragment {
 
     private static final String LOGTAG = ForecastFragment.class.getSimpleName();
@@ -106,9 +103,7 @@ public class ForecastFragment extends Fragment {
             String[] result = null;
             try {
                 result = ForecastBO.getInstance().getWeekDays(params[0]);
-            } catch (IOException e) {
-                Log.e(LOGTAG, e.getMessage());
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 Log.e(LOGTAG, e.getMessage());
             }
             return result;
@@ -117,23 +112,21 @@ public class ForecastFragment extends Fragment {
         @Override
         protected void onPostExecute(String[] ret) {
 
-
-
-            final ArrayAdapter<String> forecastAdapter = new ArrayAdapter<String>(
+            final ArrayAdapter<String> forecastAdapter = new ArrayAdapter<>(
                     getActivity(), // The current context (this activity)
                     R.layout.list_item_forecast, // The name of the layout ID.
                     R.id.list_item_forecast_textview, // The ID of the textview to populate.
                     ret);
 
-            final ListView listView = (ListView) getView().findViewById(R.id.listview_forecast);
+            final ListView listView = (ListView) getActivity().findViewById(R.id.listview_forecast);
             listView.setAdapter(forecastAdapter);
 
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(getActivity(), DetailActivity.class).
-                            putExtra(Intent.EXTRA_TEXT, forecastAdapter.getItem(position));
-                    startActivity(intent);
+                Intent intent = new Intent(getActivity(), DetailActivity.class).
+                putExtra(Intent.EXTRA_TEXT, forecastAdapter.getItem(position));
+                startActivity(intent);
                 }
             });
         }
