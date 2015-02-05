@@ -5,7 +5,9 @@ import android.util.Log;
 
 import org.json.JSONException;
 import java.io.IOException;
+import java.util.List;
 
+import com.example.jose.sunshine.app.model.Forecast;
 import com.example.jose.sunshine.app.parser.WeatherDataParser;
 import com.example.jose.sunshine.app.util.NetworkUtil;
 
@@ -27,11 +29,11 @@ public class ForecastBO {
         return instance;
     }
 
-    public String[] getWeekDays(String city) throws IOException, JSONException {
-        String[] result = new String[0];
+    public List<Forecast> getWeekDays(String city) throws IOException, JSONException {
+        List<Forecast> result = null;
         try {
             String requestResult = NetworkUtil.getRequestString(String.format(API_URL, city));
-            result = WeatherDataParser.getWeatherDataFromJson(requestResult, 7);
+            result = WeatherDataParser.getForecastListFromJson(requestResult, 7);
         } catch (IOException e) {
             Log.e(LOGTAG, e.getMessage());
         } catch (NetworkErrorException e) {

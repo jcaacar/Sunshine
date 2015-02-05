@@ -21,7 +21,11 @@ import android.widget.ListView;
 import com.example.jose.sunshine.app.R;
 import com.example.jose.sunshine.app.activity.DetailActivity;
 import com.example.jose.sunshine.app.activity.SettingsActivity;
+import com.example.jose.sunshine.app.adapter.ForecastAdapter;
 import com.example.jose.sunshine.app.bo.ForecastBO;
+import com.example.jose.sunshine.app.model.Forecast;
+
+import java.util.List;
 
 public class ForecastFragment extends Fragment {
 
@@ -94,13 +98,13 @@ public class ForecastFragment extends Fragment {
         new FetchWeatherTask().execute(location);
     }
 
-    public class FetchWeatherTask extends AsyncTask<String, String[], String[]> {
+    public class FetchWeatherTask extends AsyncTask<String, List<Forecast>, List<Forecast>> {
         @Override
-        protected String[] doInBackground(String... params) {
+        protected List<Forecast> doInBackground(String... params) {
             if(params.length == 0)
                 return null;
 
-            String[] result = null;
+            List<Forecast> result = null;
             try {
                 result = ForecastBO.getInstance().getWeekDays(params[0]);
             } catch (Exception e) {
@@ -110,13 +114,12 @@ public class ForecastFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(String[] ret) {
+        protected void onPostExecute(List<Forecast> ret) {
 
-            final ArrayAdapter<String> forecastAdapter = new ArrayAdapter<>(
-                    getActivity(), // The current context (this activity)
-                    R.layout.list_item_forecast, // The name of the layout ID.
-                    R.id.list_item_forecast_textview, // The ID of the textview to populate.
-                    ret);
+            Forecast[] array = new Forecast[ret.size()];
+            ret.toArray(array);
+
+            final ForecastAdapter forecastAdapter = new ForecastAdapter(getActivity(), R.layout.list_item_forecast, array);
 
             final ListView listView = (ListView) getActivity().findViewById(R.id.listview_forecast);
             listView.setAdapter(forecastAdapter);
@@ -124,9 +127,9 @@ public class ForecastFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(getActivity(), DetailActivity.class).
-                putExtra(Intent.EXTRA_TEXT, forecastAdapter.getItem(position));
-                startActivity(intent);
+                    Intent intent = new Intent(getActivity(), DetailActivity.class).
+                    putExtra(Intent.EXTRA_TEXT, forecastAdapter.getItem(position).toString());
+                    startActivity(intent);
                 }
             });
         }
