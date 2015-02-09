@@ -14,6 +14,10 @@ public class SettingsActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         if (savedInstanceState == null) {
             getFragmentManager().beginTransaction()
                     .replace(R.id.container, new SettingsFragment())
